@@ -1,7 +1,7 @@
 name: Issue Handler
 
 on:
-  issues:
+  issues_target:
     types: [opened]
 
 permissions:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Bot triage
-        # This forces the shell to completely ignore errors for the entire block
+        # Forces GitHub to disable its automatic "exit on error" behavior for this block
         shell: bash {0} 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +35,7 @@ jobs:
             COLOR="A2EEEF"
           fi
 
-          # Added || true so the shell registers a success even if the GH CLI errors out
+          # Run CLI processes with a fallback safety net so they never return an error code
           gh issue edit "$ISSUE_NUMBER" --add-assignee "pi-40" 2>/dev/null || true
           gh label create "$LABEL" --color "$COLOR" --force 2>/dev/null || true
           gh issue edit "$ISSUE_NUMBER" --add-label "$LABEL" 2>/dev/null || true
@@ -44,4 +44,5 @@ jobs:
           MESSAGE="Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs."
           gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE" 2>/dev/null || true
 
+          # Explicitly pass with a clean exit
           exit 0
