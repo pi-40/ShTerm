@@ -1,0 +1,20 @@
+name: Mobile Fix for ShTerm
+on: [push, pull_request]
+
+jobs:
+  build-shterm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Repair Paths and Build
+      run: |
+        # Force .NET to find and build your exact solution file at the root
+        dotnet restore ShTerm.sln
+        dotnet build ShTerm.sln --configuration Release
