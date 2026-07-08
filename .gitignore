@@ -1,32 +1,22 @@
-# ==========================================
-# 1. ROOT TARGETS (Where your .sln sits)
-# ==========================================
-/*.suo
-/*.user
-/*.sln.docstates
-/.vs/
-/.idea/
-/.vscode/
-
-# Root OS files
-/.DS_Store
-/Thumbs.db
-
-# ==========================================
-# 2. SRC TARGETS (Every C# project folder)
-# ==========================================
-# Exclude compiled output
-src/**/[Dd]ebug/
-src/**/[Rr]elease/
-src/**/bin/
-src/**/obj/
-src/**/x64/
-src/**/x86/
-
-# Exclude project-level user settings
-src/**/*.user
-src/**/*.userosscache
-
-# Exclude NuGet package leftovers
-src/**/packages/
-!src/**/packages/repositories.config
+*.sln
+*.csproj
+*.cs
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+.vs/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.nupkg
+packages/
