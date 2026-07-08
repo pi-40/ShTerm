@@ -1,5 +1,7 @@
 # Changelog
 
+* Enhance issue handler script functionality
+* docs: update commit history [skip ci]
 * Add issue handler workflow for automatic triage
 * docs: update commit history [skip ci]
 * Delete .github/workflows/ci-hygiene.yml
