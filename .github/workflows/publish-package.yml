@@ -8,26 +8,26 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Download Release ZIP
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u pi-40 --password-stdin
+
+      - name: Build Package Image
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            ZIP_URL="https://github.com"
-          else
-            ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
-          fi
+          # Creates a lightweight container layout holding your project zip
+          cat <<EOF > Dockerfile
+          FROM scratch
+          COPY . .
+          EOF
           
-          curl -L -o ShTerm.zip "$ZIP_URL"
+          docker build -t ghcr.io/pi-40/shterm:1.0.0 .
 
-      - name: Register Universal Package
-        run: |
-          mkdir -p output
-          mv ShTerm.zip output/
-          echo "ShTerm universal platform binary distribution" > output/README.md
-
-      - name: Upload Package to GitHub Dashboard
-        uses: actions/upload-artifact@v4
-        with:
-          name: ShTerm-Universal-Package
-          path: output/
+      - name: Push to GitHub Packages
+        run: docker push ghcr.io/pi-40/shterm:1.0.0
