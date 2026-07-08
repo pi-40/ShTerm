@@ -1,3 +1,5 @@
-**/*.cs linguist-language=C# linguist-detectable=true text diff=csharp
-**/*.csproj linguist-language=C# linguist-detectable=true text eol=crlf
-**/*.slnx linguist-language=C# linguist-detectable=true text eol=crlf
+* -linguist-vendored -linguist-generated
+
+*.cs linguist-language=C# linguist-detectable=true text diff=csharp
+*.csproj linguist-language=C# linguist-detectable=true -linguist-vendored -linguist-generated text eol=crlf
+*.slnx linguist-language=C# linguist-detectable=true -linguist-vendored -linguist-generated text eol=crlf
