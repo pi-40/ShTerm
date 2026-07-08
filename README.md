@@ -1,8 +1,2 @@
 # ShTerm
 You can now use Bash on Windows. Introducing Shterm: you can now use Bash commands, and it even has its own command, CTH. GitHub link lets you download GitHub packages/releases inside the terminal.
-
----
-this program was made in cs
-
----
-<img src="https://shields.io" alt="Program Info">
