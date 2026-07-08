@@ -1,5 +1,38 @@
-*
-!*/
-!*.cs
-!*.csproj
-!*.sln
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.usermd
+*.usertasks
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Re]leasePro/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bbin/
+bin/
+obj/
+
+## Tooling & IDEs
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+## Packages
+*.nupkg
+**/packages/*
+!**/packages/repositories.config
