@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete .imgbotconfig
+* docs: update commit history [skip ci]
 * Add Imgbot configuration file
 * docs: update commit history [skip ci]
 * Add CI and repository hygiene workflow
