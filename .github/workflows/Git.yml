@@ -1,12 +1,26 @@
-# Local Git Repair Configuration Script
-repository:
-  action: reset-tracking
-  scope: entire-repository
-  targets:
-    - "*.sln"
-    - "*.csproj"
-    - "*.cs"
-  execution_commands: |
-    git rm -r --cached .
-    git add .
-    git commit -m "Fix: Hard reset git tracking for C# codebases"
+name: CSharp Automated Repair and Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  fix-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code from Entire Repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Scan and Restore NuGet Packages
+      run: dotnet restore
+
+    - name: Build All .sln and .csproj Files
+      run: dotnet build --no-restore --configuration Release
