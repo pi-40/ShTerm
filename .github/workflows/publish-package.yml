@@ -16,13 +16,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          registry-url: 'https://github.com'
-          scope: '@pi-40'
-
       - name: Download Release ZIP
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -40,7 +33,6 @@ jobs:
           mkdir package
           unzip ShTerm.zip -d package/
           
-          # Creates the target configuration file automatically on the fly
           cat <<EOF > package/package.json
           {
             "name": "@pi-40/shterm",
@@ -60,6 +52,6 @@ jobs:
           tar -czf shterm-package.tgz package/
 
       - name: Push to GitHub Packages
-        run: npm publish shterm-package.tgz
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "//://github.com{{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+          npm publish shterm-package.tgz --registry=https://github.com
