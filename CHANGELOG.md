@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete .github/workflows/ci-hygiene.yml
+* docs: update commit history [skip ci]
 * Delete .imgbotconfig
 * docs: update commit history [skip ci]
 * Add Imgbot configuration file
