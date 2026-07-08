@@ -1,40 +1,29 @@
-name: Append Multicolor Footnote
+name: Update README Note
 
 on:
   push:
     branches:
-      - main
+      - main # Change this to your default branch if it is different (e.g., master)
 
 jobs:
-  add-footnote:
+  append-note:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout Repository Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check and Append Footnote
+      - name: Append C# Note to README
         run: |
-          TEXT="this program was made in cs"
-          GREEN_TEXT="$\color{green}{\text{this program was}}$"
-          ORANGE_TEXT="$\color{orange}{\text{ made in cs}}$"
+          # Ensure README.md exists
+          touch README.md
           
-          if ! grep -Fq "this program was made in cs" README.md; then
-            echo -e "\n---\n$GREEN_TEXT$ORANGE_TEXT" >> README.md
-            echo "Footnote injected successfully."
-          else
-            echo "Footnote already exists. Skipping."
-          fi
+          # Add a newline and the specific note to the bottom
+          echo -e "\n> [!NOTE]\n> this program was written in csharp" >> README.md
 
-      - name: Commit and Push Changes
+      - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@://github.com"
-          
-          if ! git diff --exit-code README.md; then
-            git add README.md
-            git commit -m "chore: automated multicolor footer update"
-            git push
-          fi
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: automatically add C# note to README" || echo "No changes to commit"
+          git push
