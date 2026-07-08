@@ -1,5 +1,7 @@
 # Changelog
 
+* Update issue-handler.yml
+* docs: update commit history [skip ci]
 * Refactor issue handler script for error handling
 * docs: update commit history [skip ci]
 * Update issue handler script for safety and clarity
