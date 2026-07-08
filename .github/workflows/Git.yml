@@ -1,26 +1,19 @@
-name: CSharp Automated Repair and Build
-
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+name: Automate Repair and Build
+on: [push, pull_request]
 
 jobs:
-  fix-and-build:
+  repair-and-build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code from Entire Repository
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup .NET Environment
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
-    - name: Scan and Restore NuGet Packages
-      run: dotnet restore
-
-    - name: Build All .sln and .csproj Files
-      run: dotnet build --no-restore --configuration Release
+    - name: Deep Scan and Build
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
