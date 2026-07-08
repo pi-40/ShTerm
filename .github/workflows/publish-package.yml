@@ -61,22 +61,8 @@ jobs:
       - name: Pack NuGet Package
         run: dotnet pack ShTerm.nuspec -o out
 
-      - name: Configure NuGet Authentication
-        run: |
-          cat <<EOF > nuget.config
-          <?xml version="1.0" encoding="utf-8"?>
-          <configuration>
-            <packageSources>
-              <add key="github" value="https://github.com" />
-            </packageSources>
-            <packageSourceCredentials>
-              <github>
-                <add key="Username" value="pi-40" />
-                <add key="ClearTextPassword" value="${{ secrets.GITHUB_TOKEN }}" />
-              </github>
-            </packageSourceCredentials>
-          </configuration>
-          EOF
-
-      - name: Push to GitHub Packages
-        run: dotnet nuget push out/*.nupkg --source "github" --skip-duplicate
+      - name: Upload Generated Binary to Dashboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-package
+          path: out/*.nupkg
