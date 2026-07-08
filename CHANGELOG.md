@@ -1,5 +1,7 @@
 # Changelog
 
+* Suppress errors in issue handler workflow
+* docs: update commit history [skip ci]
 * Update issue-handler.yml
 * docs: update commit history [skip ci]
 * Refactor issue handler script for error handling
