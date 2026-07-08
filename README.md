@@ -7,3 +7,7 @@ You can now use Bash on Windows. Introducing Shterm: you can now use Bash comman
 ```diff
 + this program was written in csharp
 ```
+
+```diff
++ this program was written in csharp
+```
