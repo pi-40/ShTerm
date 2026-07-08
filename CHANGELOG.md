@@ -1,5 +1,7 @@
 # Changelog
 
+* Add issue handler workflow for automatic triage
+* docs: update commit history [skip ci]
 * Delete .github/workflows/ci-hygiene.yml
 * docs: update commit history [skip ci]
 * Delete .imgbotconfig
