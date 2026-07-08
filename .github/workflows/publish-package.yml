@@ -13,9 +13,6 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
       - name: Download Release ZIP
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
