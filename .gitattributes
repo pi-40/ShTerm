@@ -12,20 +12,34 @@
 *.json text
 *.xml text
 *.resx text
-*.manifest text
 *.settings text
+*.manifest text
 
 *.cs text diff=csharp
 *.csx text diff=csharp
 *.designer.cs text diff=csharp
 *.generated.cs text diff=csharp
-
-*.xaml text
-*.axaml text
 *.razor text
 *.razor.cs text diff=csharp
+*.xaml text
+*.axaml text
 
 *.md text
 *.gitignore text
 *.gitattributes text
+
+*.dll binary
+*.exe binary
+*.pdb binary
+*.nupkg binary
+*.snupkg binary
+*.zip binary
+*.7z binary
+*.rar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.ico binary
 ```
