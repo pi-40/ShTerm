@@ -1,5 +1,7 @@
 # Changelog
 
+* Add global.json for SDK version configuration
+* docs: update commit history [skip ci]
 * Delete CNAME
 * docs: update commit history [skip ci]
 * Update CNAME
