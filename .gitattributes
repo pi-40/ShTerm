@@ -1,1 +1,10 @@
+# Language Detection Overrides
 *.c linguist-documentation=true
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+*.sln linguist-detectable=true
+
+# Line Ending Normalization
+*.cs text diff=csharp
+*.csproj text
+*.sln text merge=union
