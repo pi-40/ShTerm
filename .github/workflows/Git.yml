@@ -1,0 +1,12 @@
+# Local Git Repair Configuration Script
+repository:
+  action: reset-tracking
+  scope: entire-repository
+  targets:
+    - "*.sln"
+    - "*.csproj"
+    - "*.cs"
+  execution_commands: |
+    git rm -r --cached .
+    git add .
+    git commit -m "Fix: Hard reset git tracking for C# codebases"
