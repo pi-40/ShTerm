@@ -1,5 +1,7 @@
 # Changelog
 
+* Add CI and repository hygiene workflow
+* docs: update commit history [skip ci]
 * Delete .github/workflows/dependabot.yml
 * docs: update commit history [skip ci]
 * Add Dependabot configuration for package updates
