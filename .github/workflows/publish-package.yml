@@ -8,11 +8,16 @@ on:
 jobs:
   publish-package:
     runs-on: ubuntu-latest
+    container:
+      image: node:24-alpine # Forces the execution engine to run on a pure, updated environment
     permissions:
       contents: read
       packages: write
 
     steps:
+      - name: Install System Dependencies
+        run: apk add --no-cache curl jq zip
+
       - name: Download Release ZIP
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
