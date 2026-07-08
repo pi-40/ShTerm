@@ -1,0 +1,55 @@
+name: CI & Repository Hygiene
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * *' # Runs daily for stale issue management
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  # Job 1: Automated C# Build and Test Pipeline
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x' # Tailored for your .NET 10 requirement
+
+      - name: Restore Dependencies
+        run: dotnet restore shterm.slnx
+
+      - name: Build Solution
+        run: dotnet build shterm.slnx --configuration Release --no-restore
+
+  # Job 2: Automate Repository Backlog Hygiene
+  stale-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Manage Stale Issues & PRs
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: 'This issue is stale because it has been open 30 days with no activity.'
+          stale-pr-message: 'This PR is stale due to inactivity. It will close automatically in 7 days.'
+          days-before-stale: 30
+          days-before-close: 7
+
+  # Job 3: Dynamic Changelog and Release Drafting
+  release-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Draft Next Release Changelog
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
