@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete .github/workflows/issue-handler.yml
+* docs: update commit history [skip ci]
 * Modify issue handler workflow for clarity and functionality
 * docs: update commit history [skip ci]
 * Suppress errors in issue handler workflow
