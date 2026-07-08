@@ -19,8 +19,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
+          node-version: '24'
+          registry-url: 'https://github.com'
           scope: '@pi-40'
 
       - name: Download Release ZIP
@@ -37,10 +37,26 @@ jobs:
 
       - name: Build Package Archive
         run: |
-          # Unzips your release file and repacks it cleanly for the registry
           mkdir package
           unzip ShTerm.zip -d package/
-          cp package.json package/
+          
+          # Creates the target configuration file automatically on the fly
+          cat <<EOF > package/package.json
+          {
+            "name": "@pi-40/shterm",
+            "version": "1.0.0",
+            "description": "ShTerm package",
+            "main": "index.js",
+            "publishConfig": {
+              "registry": "https://github.com"
+            },
+            "repository": {
+              "type": "git",
+              "url": "git+https://github.com"
+            }
+          }
+          EOF
+          
           tar -czf shterm-package.tgz package/
 
       - name: Push to GitHub Packages
