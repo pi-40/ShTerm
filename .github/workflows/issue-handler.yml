@@ -4,60 +4,36 @@ on:
   issues:
     types: [opened]
 
-# CRITICAL: This forces GitHub to unlock permission gates for the script
 permissions:
   issues: write
-  contents: read
 
 jobs:
   manage_issue:
     runs-on: ubuntu-latest
     steps:
       - name: Bot triage
-        uses: actions/github-script@v7
-        with:
-          script: |
-            try {
-              const issueNumber = context.issue.number;
-              const owner = context.repo.owner;
-              const repo = context.repo.repo;
-              
-              // Handle edge-case where the issue body text is completely empty
-              const issueData = context.payload.issue;
-              const bodyText = (issueData && issueData.body) ? issueData.body.toLowerCase() : "";
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          # 1. Assign the repository owner to the issue
+          gh issue edit "$ISSUE_NUMBER" --add-assignee "pi-40"
 
-              // Bot automatically assigns the issue to the owner
-              await github.rest.issues.addAssignees({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                assignees: ['pi-40']
-              });
+          # 2. Extract lowercased text safely to find tags
+          TEXT_BLOCK=$(echo "$ISSUE_BODY" | tr '[:upper:]' '[:lower:]')
 
-              // Safely evaluate text blocks without breaking the runner
-              let issueLabel = 'triage';
-              if (bodyText.includes('bug') || bodyText.includes('error')) {
-                issueLabel = 'bug';
-              } else if (bodyText.includes('feature') || bodyText.includes('add')) {
-                issueLabel = 'enhancement';
-              }
+          # 3. Assess matching labels without breaking
+          LABEL="triage"
+          if [[ "$TEXT_BLOCK" == *"bug"* || "$TEXT_BLOCK" == *"error"* ]]; then
+            LABEL="bug"
+          elif [[ "$TEXT_BLOCK" == *"feature"* || "$TEXT_BLOCK" == *"add"* ]]; then
+            LABEL="enhancement"
+          fi
 
-              await github.rest.issues.addLabels({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                labels: [issueLabel]
-              });
+          # 4. Attach the determined system label
+          gh issue edit "$ISSUE_NUMBER" --add-label "$LABEL"
 
-              // Clean text delivery with zero markdown decorations
-              const botMessage = "Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs.";
-              
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                body: botMessage
-              });
-            } catch (error) {
-              core.setFailed(`Bot runtime execution encountered an error: ${error.message}`);
-            }
+          # 5. Drop a clean confirmation comment
+          MESSAGE="Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs."
+          gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
