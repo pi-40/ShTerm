@@ -1,0 +1,40 @@
+name: Append Repository Footnote
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add-footnote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Check and Append Footnote
+        run: |
+          NOTE="this program was made in cs"
+          
+          # Check if the note is already at the bottom so it doesn't duplicate
+          if ! tail -n 5 README.md | grep -Fq "$NOTE"; then
+            echo -e "\n---\n$NOTE" >> README.md
+            echo "Footnote added successfully."
+          else
+            echo "Footnote already exists. Skipping."
+          fi
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          
+          # Only commit if the README file was actually changed
+          if ! git diff --exit-code README.md; then
+            git add README.md
+            git commit -m "chore: automated footer update"
+            git push
+          fi
