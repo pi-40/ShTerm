@@ -6,7 +6,7 @@ To use this program, download the release package. Once unzipped, open the MSI f
 
 ## safety precautions
 
-Bash commands are frequently used to make malicious scripts. It is important to know what you're doing, as well as the risks of running scripts from random GitHub repositories; doing so will leave your computer at risk.
+Bash scripts are frequently used to make malicious scripts. It is important to know what you're doing, as well as the risks of running scripts from random GitHub repositories; doing so will leave your computer at risk.
 
 <img width="492" height="187" alt="image" src="https://github.com/user-attachments/assets/a37a26b7-f355-4cd3-9617-030f57da5a96" />
 
