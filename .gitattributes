@@ -1,5 +1,31 @@
-* -linguist-vendored -linguist-generated
+```gitattributes
+* text=auto
 
-**/*.cs linguist-language=C# linguist-detectable=true text diff=csharp
-**/*.csproj linguist-language=XML linguist-detectable=true text eol=crlf
-**/*.slnx linguist-language=XML linguist-detectable=true text eol=crlf
+*.sln text
+*.slnx text
+*.csproj text
+*.props text
+*.targets text
+*.ruleset text
+*.editorconfig text
+*.config text
+*.json text
+*.xml text
+*.resx text
+*.manifest text
+*.settings text
+
+*.cs text diff=csharp
+*.csx text diff=csharp
+*.designer.cs text diff=csharp
+*.generated.cs text diff=csharp
+
+*.xaml text
+*.axaml text
+*.razor text
+*.razor.cs text diff=csharp
+
+*.md text
+*.gitignore text
+*.gitattributes text
+```
