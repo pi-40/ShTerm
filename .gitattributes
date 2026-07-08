@@ -1,45 +1,15 @@
 ```gitattributes
-* text=auto
+*.Designer.cs linguist-generated
+*.designer.cs linguist-generated
+*.generated.cs linguist-generated
 
-*.sln text
-*.slnx text
-*.csproj text
-*.props text
-*.targets text
-*.ruleset text
-*.editorconfig text
-*.config text
-*.json text
-*.xml text
-*.resx text
-*.settings text
-*.manifest text
+*.resx linguist-generated
+
+*.sln linguist-documentation
+*.slnx linguist-documentation
 
 *.cs text diff=csharp
-*.csx text diff=csharp
-*.designer.cs text diff=csharp
-*.generated.cs text diff=csharp
-*.razor text
-*.razor.cs text diff=csharp
-*.xaml text
-*.axaml text
-
-*.md text
-*.gitignore text
-*.gitattributes text
-
-*.dll binary
-*.exe binary
-*.pdb binary
-*.nupkg binary
-*.snupkg binary
-*.zip binary
-*.7z binary
-*.rar binary
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.bmp binary
-*.ico binary
+*.resx text
+*.sln text
+*.slnx text
 ```
