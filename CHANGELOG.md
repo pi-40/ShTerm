@@ -1,5 +1,7 @@
 # Changelog
 
+* Refactor issue handler script for error handling
+* docs: update commit history [skip ci]
 * Update issue handler script for safety and clarity
 * docs: update commit history [skip ci]
 * Refactor issue handler workflow for better clarity
