@@ -1,4 +1,4 @@
 *.c linguist-documentation=true
 *.cs linguist-detectable=true
 *.csproj linguist-detectable=true
-*.sln linguist-detectable=true
+*.slnx linguist-detectable=true
