@@ -1,15 +1,11 @@
 ```gitattributes
-*.Designer.cs linguist-generated
-*.designer.cs linguist-generated
-*.generated.cs linguist-generated
+*.cs linguist-language=C#
 
-*.resx linguist-generated
+*.resx linguist-language=XML
+*.xml linguist-language=XML
 
-*.sln linguist-documentation
-*.slnx linguist-documentation
+*.sln linguist-language=Text
+*.slnx linguist-language=Text
 
-*.cs text diff=csharp
-*.resx text
-*.sln text
-*.slnx text
+*.md linguist-language=Markdown
 ```
