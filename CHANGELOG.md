@@ -1,5 +1,7 @@
 # Changelog
 
+* Refactor issue handler workflow for better clarity
+* docs: update commit history [skip ci]
 * Enhance issue handler script functionality
 * docs: update commit history [skip ci]
 * Add issue handler workflow for automatic triage
