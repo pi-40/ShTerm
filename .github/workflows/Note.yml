@@ -1,4 +1,4 @@
-name: Append Green Repository Footnote
+name: Append Multicolor Footnote
 
 on:
   push:
@@ -15,13 +15,15 @@ jobs:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      - name: Check and Append Green Footnote
+      - name: Check and Append Footnote
         run: |
-          NOTE='<img src="https://shields.io" alt="Program Info">'
+          TEXT="this program was made in cs"
+          GREEN_TEXT="$\color{green}{\text{this program was}}$"
+          ORANGE_TEXT="$\color{orange}{\text{ made in cs}}$"
           
-          if ! grep -Fq "this%20program%20was%20made%20in%20cs" README.md; then
-            echo -e "\n---\n$NOTE" >> README.md
-            echo "Green footnote injected successfully."
+          if ! grep -Fq "this program was made in cs" README.md; then
+            echo -e "\n---\n$GREEN_TEXT$ORANGE_TEXT" >> README.md
+            echo "Footnote injected successfully."
           else
             echo "Footnote already exists. Skipping."
           fi
@@ -33,6 +35,6 @@ jobs:
           
           if ! git diff --exit-code README.md; then
             git add README.md
-            git commit -m "chore: automated green footer update"
+            git commit -m "chore: automated multicolor footer update"
             git push
           fi
