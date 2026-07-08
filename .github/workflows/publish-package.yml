@@ -1,0 +1,34 @@
+name: Publish Release ZIP to GitHub Packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-artifact:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Get Release Asset Information
+        id: get_release
+        uses: softprops/action-gh-release@v2
+        with:
+          id: ${{ github.event.release.id }}
+
+      - name: Download Release ZIP
+        run: |
+          ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/octet-stream" \
+               -L -o ShTerm_package.zip "$ZIP_URL"
+
+      - name: Upload to GitHub Packages
+        run: |
+          curl -X PUT \
+               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Content-Type: application/zip" \
+               --data-binary @ShTerm_package.zip \
+               "https://github.com{{ github.event.release.tag_name }}/ShTerm.zip"
