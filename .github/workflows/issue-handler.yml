@@ -17,23 +17,30 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          # 1. Assign the repository owner to the issue
-          gh issue edit "$ISSUE_NUMBER" --add-assignee "pi-40"
+          # 1. Assign the repository owner safely
+          gh issue edit "$ISSUE_NUMBER" --add-assignee "pi-40" || true
 
-          # 2. Extract lowercased text safely to find tags
+          # 2. Extract lowercased text safely
           TEXT_BLOCK=$(echo "$ISSUE_BODY" | tr '[:upper:]' '[:lower:]')
 
-          # 3. Assess matching labels without breaking
+          # 3. Determine label types
           LABEL="triage"
+          COLOR="65717B"
+          
           if [[ "$TEXT_BLOCK" == *"bug"* || "$TEXT_BLOCK" == *"error"* ]]; then
             LABEL="bug"
+            COLOR="D93F0B"
           elif [[ "$TEXT_BLOCK" == *"feature"* || "$TEXT_BLOCK" == *"add"* ]]; then
             LABEL="enhancement"
+            COLOR="A2EEEF"
           fi
 
-          # 4. Attach the determined system label
+          # 4. Dynamically create the label if GitHub doesn't have it yet
+          gh label create "$LABEL" --color "$COLOR" --force || true
+
+          # 5. Attach the determined system label
           gh issue edit "$ISSUE_NUMBER" --add-label "$LABEL"
 
-          # 5. Drop a clean confirmation comment
+          # 6. Drop a clean verification comment
           MESSAGE="Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs."
           gh issue comment "$ISSUE_NUMBER" --body "$MESSAGE"
