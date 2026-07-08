@@ -1,0 +1,20 @@
+{
+  "name": "ShTerm .NET 10 Dev Environment",
+  "image": "://microsoft.com",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "dotnet.defaultSolution": "shterm.slnx"
+      },
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-vscode.live-server"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "postCreateCommand": "dotnet restore shterm.slnx"
+}
