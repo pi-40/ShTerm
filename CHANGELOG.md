@@ -1,5 +1,7 @@
 # Changelog
 
+* Add .NET CI workflow for build and test
+* docs: update commit history [skip ci]
 * Update issue templates
 * docs: update commit history [skip ci]
 * Delete .github/workflows/issue-handler.yml
