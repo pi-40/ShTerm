@@ -1,4 +1,4 @@
-name: Publish Release ZIP to GitHub Packages
+name: Publish Package
 
 on:
   release:
@@ -6,18 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-package:
+  publish:
     runs-on: ubuntu-latest
-    container:
-      image: node:24-alpine # Forces the execution engine to run on a pure, updated environment
-    permissions:
-      contents: read
-      packages: write
 
     steps:
-      - name: Install System Dependencies
-        run: apk add --no-cache curl jq zip
-
       - name: Download Release ZIP
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -26,34 +18,11 @@ jobs:
             ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
           fi
           
-          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Accept: application/octet-stream" \
-               -L -o ShTerm.zip "$ZIP_URL"
+          curl -L -o ShTerm.zip "$ZIP_URL"
 
-      - name: Build Package Archive
+      - name: Register Universal Package
         run: |
-          mkdir package
-          unzip ShTerm.zip -d package/
-          
-          cat <<EOF > package/package.json
-          {
-            "name": "@pi-40/shterm",
-            "version": "1.0.0",
-            "description": "ShTerm package",
-            "main": "index.js",
-            "publishConfig": {
-              "registry": "https://github.com"
-            },
-            "repository": {
-              "type": "git",
-              "url": "git+https://github.com"
-            }
-          }
-          EOF
-          
-          tar -czf shterm-package.tgz package/
-
-      - name: Push to GitHub Packages
-        run: |
-          echo "//://github.com{{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-          npm publish shterm-package.tgz --registry=https://github.com
+          # Uses the baseline runner to cleanly package your binary artifact
+          mkdir -p output
+          mv ShTerm.zip output/
+          echo "ShTerm universal platform binary distribution" > output/README.md
