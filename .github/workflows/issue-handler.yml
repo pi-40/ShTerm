@@ -4,8 +4,10 @@ on:
   issues:
     types: [opened]
 
+# CRITICAL: This forces GitHub to unlock permission gates for the script
 permissions:
   issues: write
+  contents: read
 
 jobs:
   manage_issue:
@@ -15,40 +17,47 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const issueNumber = context.issue.number;
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const body = context.payload.issue.body || "";
+            try {
+              const issueNumber = context.issue.number;
+              const owner = context.repo.owner;
+              const repo = context.repo.repo;
+              
+              // Handle edge-case where the issue body text is completely empty
+              const issueData = context.payload.issue;
+              const bodyText = (issueData && issueData.body) ? issueData.body.toLowerCase() : "";
 
-            // Bot automatically assigns the issue to the owner
-            await github.rest.issues.addAssignees({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              assignees: ['pi-40']
-            });
+              // Bot automatically assigns the issue to the owner
+              await github.rest.issues.addAssignees({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                assignees: ['pi-40']
+              });
 
-            // Bot scans text to apply clean text labels
-            let issueLabel = 'triage';
-            if (body.toLowerCase().includes('bug') || body.toLowerCase().includes('error')) {
-              issueLabel = 'bug';
-            } else if (body.toLowerCase().includes('feature') || body.toLowerCase().includes('add')) {
-              issueLabel = 'enhancement';
+              // Safely evaluate text blocks without breaking the runner
+              let issueLabel = 'triage';
+              if (bodyText.includes('bug') || bodyText.includes('error')) {
+                issueLabel = 'bug';
+              } else if (bodyText.includes('feature') || bodyText.includes('add')) {
+                issueLabel = 'enhancement';
+              }
+
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                labels: [issueLabel]
+              });
+
+              // Clean text delivery with zero markdown decorations
+              const botMessage = "Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs.";
+              
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body: botMessage
+              });
+            } catch (error) {
+              core.setFailed(`Bot runtime execution encountered an error: ${error.message}`);
             }
-
-            await github.rest.issues.addLabels({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              labels: [issueLabel]
-            });
-
-            // Bot leaves a clean message with zero emojis
-            const botMessage = `Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs.`;
-            
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              body: botMessage
-            });
