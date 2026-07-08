@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete .github/workflows/dependabot.yml
+* docs: update commit history [skip ci]
 * Add Dependabot configuration for package updates
 * docs: update commit history [skip ci]
 * Create devcontainer.json
