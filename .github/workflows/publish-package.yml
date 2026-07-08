@@ -16,10 +16,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          dotnet-version: '8.0.x'
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@pi-40'
 
       - name: Download Release ZIP
         run: |
@@ -33,36 +35,15 @@ jobs:
                -H "Accept: application/octet-stream" \
                -L -o ShTerm.zip "$ZIP_URL"
 
-      - name: Create NuGet Package Manifest
+      - name: Build Package Archive
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            CLEAN_VERSION="1.0.0"
-          else
-            CLEAN_VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
-          fi
-          
-          cat <<EOF > ShTerm.nuspec
-          <?xml version="1.0"?>
-          <package>
-            <metadata>
-              <id>ShTerm</id>
-              <version>${CLEAN_VERSION}</version>
-              <authors>pi-40</authors>
-              <owners>pi-40</owners>
-              <description>ShTerm release artifact binary package</description>
-              <repository type="git" url="https://github.com" />
-            </metadata>
-            <files>
-              <file src="ShTerm.zip" target="content/" />
-            </files>
-          </package>
-          EOF
+          # Unzips your release file and repacks it cleanly for the registry
+          mkdir package
+          unzip ShTerm.zip -d package/
+          cp package.json package/
+          tar -czf shterm-package.tgz package/
 
-      - name: Pack NuGet Package
-        run: dotnet pack ShTerm.nuspec -o out
-
-      - name: Upload Generated Binary to Dashboard
-        uses: actions/upload-artifact@v4
-        with:
-          name: compiled-package
-          path: out/*.nupkg
+      - name: Push to GitHub Packages
+        run: npm publish shterm-package.tgz
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
