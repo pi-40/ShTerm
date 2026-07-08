@@ -1,5 +1,7 @@
 # Changelog
 
+* Update CNAME
+* docs: update commit history [skip ci]
 * Create CNAME
 * docs: update commit history [skip ci]
 * Delete .github/workflows/deploy.yml
