@@ -3,3 +3,6 @@ You can now use Bash on Windows. Introducing Shterm: you can now use Bash comman
 
 ---
 this program was made in cs
+
+---
+<img src="https://shields.io" alt="Program Info">
