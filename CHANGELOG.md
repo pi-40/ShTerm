@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete .github/workflows/deploy.yml
+* docs: update commit history [skip ci]
 * Add GitHub Actions workflow for deployment
 * docs: update commit history [skip ci]
 * Add .NET CI workflow for build and test
