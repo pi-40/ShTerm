@@ -3,3 +3,7 @@ You can now use Bash on Windows. Introducing Shterm: you can now use Bash comman
 
 > [!NOTE]
 > this program was written in csharp
+
+```diff
++ this program was written in csharp
+```
