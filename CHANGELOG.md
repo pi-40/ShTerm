@@ -1,5 +1,7 @@
 # Changelog
 
+* Add Dependabot configuration for package updates
+* docs: update commit history [skip ci]
 * Create devcontainer.json
 * docs: update commit history [skip ci]
 * Create changelog.yml
