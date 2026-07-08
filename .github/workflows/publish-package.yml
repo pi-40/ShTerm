@@ -3,6 +3,7 @@ name: Publish Release ZIP to GitHub Packages
 on:
   release:
     types: [published]
+  workflow_dispatch: # This adds the manual "Run" button to your dashboard
 
 jobs:
   publish-package:
@@ -25,17 +26,29 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           id: ${{ github.event.release.id }}
+        continue-on-error: true # Prevents failing if running manually without a release event
 
       - name: Download Release ZIP
         run: |
-          ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
+          # If manual run, it defaults to your v1.0.0 release zip asset link
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ZIP_URL="https://github.com"
+          else
+            ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
+          fi
+          
           curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/octet-stream" \
                -L -o ShTerm.zip "$ZIP_URL"
 
       - name: Create NuGet Package Manifest
         run: |
-          CLEAN_VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            CLEAN_VERSION="1.0.0"
+          else
+            CLEAN_VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          fi
+          
           cat <<EOF > ShTerm.nuspec
           <?xml version="1.0"?>
           <package>
