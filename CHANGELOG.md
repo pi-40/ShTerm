@@ -1,5 +1,7 @@
 # Changelog
 
+* Add GitHub Actions workflow for deployment
+* docs: update commit history [skip ci]
 * Add .NET CI workflow for build and test
 * docs: update commit history [skip ci]
 * Update issue templates
