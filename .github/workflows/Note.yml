@@ -1,4 +1,4 @@
-name: Append Repository Footnote
+name: Append Green Repository Footnote
 
 on:
   push:
@@ -15,14 +15,13 @@ jobs:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      - name: Check and Append Footnote
+      - name: Check and Append Green Footnote
         run: |
-          NOTE="this program was made in cs"
+          NOTE='<img src="https://shields.io" alt="Program Info">'
           
-          # Check if the note is already at the bottom so it doesn't duplicate
-          if ! tail -n 5 README.md | grep -Fq "$NOTE"; then
+          if ! grep -Fq "this%20program%20was%20made%20in%20cs" README.md; then
             echo -e "\n---\n$NOTE" >> README.md
-            echo "Footnote added successfully."
+            echo "Green footnote injected successfully."
           else
             echo "Footnote already exists. Skipping."
           fi
@@ -32,9 +31,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@://github.com"
           
-          # Only commit if the README file was actually changed
           if ! git diff --exit-code README.md; then
             git add README.md
-            git commit -m "chore: automated footer update"
+            git commit -m "chore: automated green footer update"
             git push
           fi
