@@ -1,5 +1,7 @@
 # Changelog
 
+* Create CONTRIBUTING.md with contribution guidelines
+* docs: update commit history [skip ci]
 * Add global.json for SDK version configuration
 * docs: update commit history [skip ci]
 * Delete CNAME
