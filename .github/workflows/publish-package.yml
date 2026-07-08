@@ -5,13 +5,21 @@ on:
     types: [published]
 
 jobs:
-  publish-artifact:
+  publish-package:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
       - name: Get Release Asset Information
         id: get_release
         uses: softprops/action-gh-release@v2
@@ -23,12 +31,32 @@ jobs:
           ZIP_URL=$(jq -r '.release.assets[] | select(.name | endswith(".zip")) | .url' $GITHUB_EVENT_PATH)
           curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/octet-stream" \
-               -L -o ShTerm_package.zip "$ZIP_URL"
+               -L -o ShTerm.zip "$ZIP_URL"
 
-      - name: Upload to GitHub Packages
+      - name: Create NuGet Package Manifest
         run: |
-          curl -X PUT \
-               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Content-Type: application/zip" \
-               --data-binary @ShTerm_package.zip \
-               "https://github.com{{ github.event.release.tag_name }}/ShTerm.zip"
+          CLEAN_VERSION=$(echo "${{ github.event.release.tag_name }}" | sed 's/^v//')
+          cat <<EOF > ShTerm.nuspec
+          <?xml version="1.0"?>
+          <package>
+            <metadata>
+              <id>ShTerm</id>
+              <version>${CLEAN_VERSION}</version>
+              <authors>pi-40</authors>
+              <owners>pi-40</owners>
+              <description>ShTerm release artifact binary package</description>
+              <repository type="git" url="https://github.com" />
+            </metadata>
+            <files>
+              <file src="ShTerm.zip" target="content/" />
+            </files>
+          </package>
+          EOF
+
+      - name: Pack NuGet Package
+        run: dotnet pack ShTerm.nuspec -o out
+
+      - name: Push to GitHub Packages
+        run: |
+          dotnet nuget add source --username pi-40 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://github.com"
+          dotnet nuget push out/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
