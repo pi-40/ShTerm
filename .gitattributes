@@ -2,4 +2,3 @@
 **/*.csproj linguist-language=c# text eol=crlf
 
 **/*.slnx linguist-language=xml linguist-detectable=true text eol=crlf
-**/*.resx linguist-language=xml linguist-generated=true text eol=crlf
