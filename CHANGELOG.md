@@ -1,5 +1,7 @@
 # Changelog
 
+* Delete CNAME
+* docs: update commit history [skip ci]
 * Update CNAME
 * docs: update commit history [skip ci]
 * Update CNAME
