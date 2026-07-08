@@ -1,7 +1,11 @@
 ```gitignore
-bin/
-obj/
-.vs/
+**/bin/
+**/obj/
+**/.vs/
+**/TestResults/
+**/artifacts/
+**/publish/
+**/packages/
 
 *.user
 *.suo
@@ -10,12 +14,7 @@ obj/
 *.cache
 *.log
 
-TestResults/
-
-artifacts/
-publish/
-
-_ReSharper*/
+*_ReSharper*/
 *.DotSettings.user
 
 .idea/
@@ -31,6 +30,5 @@ _ReSharper*/
 *.iobj
 *.ipdb
 
-packages/
-!packages/build/
+!**/packages/build/
 ```
