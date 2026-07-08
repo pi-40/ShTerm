@@ -63,4 +63,5 @@ jobs:
 
       - name: Push to GitHub Packages
         run: |
-          dotnet nuget push out/*.nupkg --source "https://github.com" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          dotnet nuget add source --username pi-40 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://github.com"
+          dotnet nuget push out/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
