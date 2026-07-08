@@ -1,0 +1,54 @@
+name: Issue Handler
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  manage_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bot triage
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const body = context.payload.issue.body || "";
+
+            // Bot automatically assigns the issue to the owner
+            await github.rest.issues.addAssignees({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              assignees: ['pi-40']
+            });
+
+            // Bot scans text to apply clean text labels
+            let issueLabel = 'triage';
+            if (body.toLowerCase().includes('bug') || body.toLowerCase().includes('error')) {
+              issueLabel = 'bug';
+            } else if (body.toLowerCase().includes('feature') || body.toLowerCase().includes('add')) {
+              issueLabel = 'enhancement';
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              labels: [issueLabel]
+            });
+
+            // Bot leaves a clean message with zero emojis
+            const botMessage = `Thank you for opening an issue on ShTerm. The project owner has been assigned to look into this report. Please ensure you have included your Windows version and terminal logs.`;
+            
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: botMessage
+            });
