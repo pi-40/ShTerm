@@ -1,38 +1,32 @@
-## User-specific files
-*.rsuser
-*.suo
-*.user
-*.usermd
-*.usertasks
-*.sln.docstates
+# ==========================================
+# 1. ROOT TARGETS (Where your .sln sits)
+# ==========================================
+/*.suo
+/*.user
+/*.sln.docstates
+/.vs/
+/.idea/
+/.vscode/
 
-## Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Re]leasePro/
-x64/
-x86/
-[Aa]rm/
-[Aa]rm64/
-bbin/
-bin/
-obj/
+# Root OS files
+/.DS_Store
+/Thumbs.db
 
-## Tooling & IDEs
-.vs/
-.idea/
-.vscode/
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+# ==========================================
+# 2. SRC TARGETS (Every C# project folder)
+# ==========================================
+# Exclude compiled output
+src/**/[Dd]ebug/
+src/**/[Rr]elease/
+src/**/bin/
+src/**/obj/
+src/**/x64/
+src/**/x86/
 
-## OS generated files
-.DS_Store
-Thumbs.db
+# Exclude project-level user settings
+src/**/*.user
+src/**/*.userosscache
 
-## Packages
-*.nupkg
-**/packages/*
-!**/packages/repositories.config
+# Exclude NuGet package leftovers
+src/**/packages/
+!src/**/packages/repositories.config
