@@ -3,7 +3,7 @@ name: Publish Release ZIP to GitHub Packages
 on:
   release:
     types: [published]
-  workflow_dispatch: # This adds the manual "Run" button to your dashboard
+  workflow_dispatch:
 
 jobs:
   publish-package:
@@ -21,16 +21,8 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Get Release Asset Information
-        id: get_release
-        uses: softprops/action-gh-release@v2
-        with:
-          id: ${{ github.event.release.id }}
-        continue-on-error: true # Prevents failing if running manually without a release event
-
       - name: Download Release ZIP
         run: |
-          # If manual run, it defaults to your v1.0.0 release zip asset link
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             ZIP_URL="https://github.com"
           else
@@ -72,4 +64,4 @@ jobs:
       - name: Push to GitHub Packages
         run: |
           dotnet nuget add source --username pi-40 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://github.com"
-          dotnet nuget push out/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+          dotnet nuget push out/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
