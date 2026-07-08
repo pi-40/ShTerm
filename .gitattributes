@@ -1,5 +1,5 @@
-**/*.cs linguist-language=C# text diff=csharp
-**/*.csproj linguist-language=C# text eol=crlf
+**/*.cs linguist-language=C# linguist-detectable=true text diff=csharp
+**/*.csproj linguist-language=C# linguist-detectable=true text eol=crlf
 
-**/*.slnx linguist-language=XML linguist-generated=true text eol=crlf
-**/*.resx linguist-language=XML linguist-generated=true text eol=crlf
+**/*.slnx linguist-language="XML Property List" linguist-detectable=true text eol=crlf
+**/*.resx linguist-language="XML Property List" linguist-detectable=true text eol=crlf
