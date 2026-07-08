@@ -1,5 +1,7 @@
 # Changelog
 
+* Add Imgbot configuration file
+* docs: update commit history [skip ci]
 * Add CI and repository hygiene workflow
 * docs: update commit history [skip ci]
 * Delete .github/workflows/dependabot.yml
