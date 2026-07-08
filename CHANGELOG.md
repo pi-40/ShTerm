@@ -1,5 +1,7 @@
 # Changelog
 
+* Create devcontainer.json
+* docs: update commit history [skip ci]
 * Create changelog.yml
 * Add .editorconfig for consistent code formatting
 * Update README.md
