@@ -1,6 +1,6 @@
-**/*.cs linguist-language=C# text diff=csharp
-**/*.csproj linguist-language=C# text eol=crlf
+**/*.cs linguist-language=C# linguist-detectable=true text diff=csharp
+**/*.csproj linguist-language=C# linguist-detectable=true text eol=crlf
 
 
-**/*.slnx linguist-language=TeX linguist-data=true text eol=crlf
-**/*.resx linguist-language=TeX linguist-data=true text eol=crlf
+**/*.slnx linguist-language=TextGrid linguist-detectable=true text eol=crlf
+**/*.resx linguist-language=TextGrid linguist-detectable=true text eol=crlf
