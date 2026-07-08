@@ -1,5 +1,5 @@
 **/*.cs linguist-language=C# linguist-detectable=true text diff=csharp
 **/*.csproj linguist-language=C# linguist-detectable=true text eol=crlf
 
-**/*.slnx linguist-language=JSON linguist-detectable=true text eol=crlf
-**/*.resx linguist-language=JSON linguist-detectable=true text eol=crlf
+**/*.slnx linguist-language=TextProto linguist-detectable=true text eol=crlf
+**/*.resx linguist-language=TextProto linguist-detectable=true text eol=crlf
