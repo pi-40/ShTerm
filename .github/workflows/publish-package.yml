@@ -22,7 +22,12 @@ jobs:
 
       - name: Register Universal Package
         run: |
-          # Uses the baseline runner to cleanly package your binary artifact
           mkdir -p output
           mv ShTerm.zip output/
           echo "ShTerm universal platform binary distribution" > output/README.md
+
+      - name: Upload Package to GitHub Dashboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShTerm-Universal-Package
+          path: output/
